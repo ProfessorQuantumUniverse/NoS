@@ -1,11 +1,13 @@
+// scripts/vote.js
 document.addEventListener('DOMContentLoaded', async () => {
     const groupCode = sessionStorage.getItem('scienceNightGroupCode');
     const username = sessionStorage.getItem('scienceNightUsername');
     const eventsContainer = document.getElementById('event-cards-container');
     const userGreeting = document.getElementById('user-greeting');
     const resultsLink = document.getElementById('results-link');
-    const loaderContainer = document.getElementById('loader-container-vote');
-    const messageContainer = document.getElementById('message-container-vote');
+    // Der globale Loader-Container bleibt für das initiale Laden
+    const initialLoaderContainer = document.getElementById('loader-container-vote'); 
+    const messageContainerId = 'message-container-vote'; // ID des Nachrichten-Containers
 
     if (!groupCode || !username) {
         window.location.href = 'index.html';
@@ -15,25 +17,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     userGreeting.textContent = `Angemeldet als: ${username} (Gruppe: ${groupCode})`;
     resultsLink.href = `results.html?code=${encodeURIComponent(groupCode)}`;
 
-    showLoader('loader-container-vote');
+    showLoader(initialLoaderContainer.id); // Loader für initiales Laden
 
     const [eventsResponse, userVotesResponse] = await Promise.all([
         callGoogleScript('getEvents'),
         callGoogleScript('getUserVotes', { groupCode, username })
     ]);
 
-    hideLoader();
+    hideLoader(); // Loader nach initialem Laden ausblenden
 
     if (!eventsResponse.success || !eventsResponse.events) {
-        displayMessage('Fehler beim Laden der Veranstaltungen.', 'error', 'message-container-vote');
+        displayMessage('Fehler beim Laden der Veranstaltungen.', 'error', messageContainerId, 0); // 0 = kein Timeout
         return;
     }
     if (!userVotesResponse.success) {
-        // Non-critical, user might not have voted yet
         console.warn('Could not load user votes, proceeding without them.');
+        // Optional: displayMessage('Konnte bisherige Stimmen nicht laden.', 'error', messageContainerId);
     }
     
-    const userVotes = userVotesResponse.votes || {}; // { eventId: score }
+    const userVotes = userVotesResponse.votes || {};
 
     if (eventsResponse.events.length === 0) {
         eventsContainer.innerHTML = '<p>Keine Veranstaltungen für die Abstimmung gefunden.</p>';
@@ -64,39 +66,60 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (parseInt(button.dataset.score) === currentVote) {
                 button.classList.add('selected');
             }
-            button.addEventListener('click', async () => {
+
+            button.addEventListener('click', () => { // async hier nicht mehr nötig, da wir nicht mehr awaiten
                 const score = parseInt(button.dataset.score);
+                const previouslySelectedButton = card.querySelector('.vote-btn.selected');
                 
-                // Optimistic UI update
+                // 1. Optimistic UI update: Buttons sofort aktualisieren
                 buttons.forEach(btn => btn.classList.remove('selected'));
                 button.classList.add('selected');
                 
-                showLoader('loader-container-vote'); // Show loader for this action
-                const voteResponse = await callGoogleScript('recordVote', {
+                // 2. Alten globalen Loader entfernen.
+                // KEIN showLoader() / hideLoader() hier für den einzelnen Vote.
+
+                // 3. Daten im Hintergrund senden
+                callGoogleScript('recordVote', {
                     groupCode,
                     username,
                     eventId: event.id,
                     score
-                });
-                hideLoader();
-
-                if (voteResponse.success) {
-                    // Update userVotes cache
-                    userVotes[event.id] = score;
-                    displayMessage(`Stimme für "${event.title}" gespeichert!`, 'success', 'message-container-vote');
-                    setTimeout(() => messageContainer.innerHTML = '', 3000); // Clear message
-                } else {
-                    displayMessage(`Fehler beim Speichern der Stimme für "${event.title}".`, 'error', 'message-container-vote');
-                    // Revert UI if failed
-                    buttons.forEach(btn => btn.classList.remove('selected'));
-                    // Re-select previous vote if it existed
-                    const previousVote = userVotes[event.id];
-                     buttons.forEach(btn => {
-                        if (parseInt(btn.dataset.score) === previousVote) {
-                            btn.classList.add('selected');
+                }).then(voteResponse => {
+                    if (voteResponse.success) {
+                        // Lokalen Cache der Stimmen aktualisieren
+                        userVotes[event.id] = score;
+                        let scoreEmoji = score === 1 ? '👍' : score === -1 ? '👎' : '🤷';
+                        displayMessage(`Stimme (${scoreEmoji}) für "${event.title}" gespeichert.`, 'success', messageContainerId);
+                    } else {
+                        // Fehler beim Speichern: UI Rollback
+                        displayMessage(`Fehler: Stimme für "${event.title}" nicht gespeichert. ${voteResponse.message || ''}`, 'error', messageContainerId, 5000);
+                        buttons.forEach(btn => btn.classList.remove('selected')); // Aktuelle Auswahl entfernen
+                        if (previouslySelectedButton) { // Alten Button wieder auswählen, falls vorhanden
+                            previouslySelectedButton.classList.add('selected');
+                        } else if (userVotes[event.id] !== undefined) { // Oder auf den alten Wert aus dem Cache zurücksetzen
+                            const oldScore = userVotes[event.id];
+                            buttons.forEach(btn => {
+                                if (parseInt(btn.dataset.score) === oldScore) {
+                                    btn.classList.add('selected');
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                }).catch(error => {
+                    // Netzwerkfehler oder Skriptfehler: UI Rollback
+                    displayMessage(`Netzwerk-/Skriptfehler beim Speichern für "${event.title}". Bitte erneut versuchen. (${error.message})`, 'error', messageContainerId, 5000);
+                    buttons.forEach(btn => btn.classList.remove('selected')); // Aktuelle Auswahl entfernen
+                    if (previouslySelectedButton) { // Alten Button wieder auswählen, falls vorhanden
+                        previouslySelectedButton.classList.add('selected');
+                    } else if (userVotes[event.id] !== undefined) {
+                         const oldScore = userVotes[event.id];
+                         buttons.forEach(btn => {
+                             if (parseInt(btn.dataset.score) === oldScore) {
+                                 btn.classList.add('selected');
+                             }
+                         });
+                    }
+                });
             });
         });
     });
