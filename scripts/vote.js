@@ -1,4 +1,4 @@
-// scripts/vote.js
+
 document.addEventListener('DOMContentLoaded', async () => {
     const groupCode = sessionStorage.getItem('scienceNightGroupCode');
     const username = sessionStorage.getItem('scienceNightUsername');
