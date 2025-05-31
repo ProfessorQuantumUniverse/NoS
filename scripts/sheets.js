@@ -48,10 +48,33 @@ function hideLoader() {
     }
 }
 
-function displayMessage(message, type = 'error', containerId = 'message-container') {
+let messageTimeoutId = null;
+
+function displayMessage(message, type = 'error', containerId = 'message-container', timeout = 3500) {
     const container = document.getElementById(containerId);
     if (container) {
-        container.innerHTML = `<div class="${type}-message">${message}</div>`;
+        // Vorherigen Timeout löschen, falls vorhanden
+        if (messageTimeoutId) {
+            clearTimeout(messageTimeoutId);
+        }
+
+        const messageDiv = document.createElement('div');
+        // Stelle sicher, dass du auch eine .success-message Klasse im CSS hast
+        messageDiv.className = `${type}-message`;
+        messageDiv.textContent = message;
+        
+        container.innerHTML = ''; // Alte Nachricht entfernen
+        container.appendChild(messageDiv);
+
+        if (timeout > 0) {
+            messageTimeoutId = setTimeout(() => {
+                // Nur entfernen, wenn es noch die aktuelle Nachricht ist und der Container noch das Div enthält
+                if (container.contains(messageDiv)) {
+                     container.innerHTML = '';
+                }
+                messageTimeoutId = null;
+            }, timeout);
+        }
     } else {
         alert(message); // Fallback
     }
