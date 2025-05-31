@@ -28,6 +28,7 @@ body {
   width: 100%;
   max-width: 500px;
   margin-bottom: 20px;
+  animation: fadeInSlideUp 0.7s ease-out forwards;
 }
 
 h1, h2 {
@@ -61,7 +62,7 @@ select {
   border-radius: 5px;
   font-size: 16px;
   font-family: 'Exo 2', sans-serif;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input[type="text"]:focus,
@@ -69,7 +70,8 @@ input[type="password"]:focus,
 select:focus {
   outline: none;
   border-color: #00ffff; /* Solid cyan */
-  box-shadow: 0 0 5px #00ffff; /* Cyan glow */
+  box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff80; /* Enhanced static glow */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition to this state */
 }
 
 .btn {
@@ -84,25 +86,35 @@ select:focus {
   font-family: 'Exo 2', sans-serif;
   text-align: center;
   text-decoration: none;
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Added color and box-shadow transition */
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
   width: 100%;
 }
 
 .btn:hover {
   background-color: #00e0e0; /* Slightly darker cyan */
   color: #1a1a2e;
-  box-shadow: 0 0 10px #00ffff;
+  transform: scale(1.05); /* Added */
+  box-shadow: 0 0 15px #00ffff, 0 0 5px #00d0d0; /* Enhanced shadow */
+}
+.btn:active { /* Added active state for more feedback */
+    transform: scale(0.98);
 }
 
 .btn-secondary {
   background-color: transparent;
   color: #00ffff; /* Cyan text */
   border: 1px solid #00ffff;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.3s ease;
 }
 .btn-secondary:hover {
   background-color: #00ffff1a; /* Cyan with low opacity */
   color: #00ffff;
-  box-shadow: 0 0 8px #00ffff80;
+  transform: scale(1.05); /* Added */
+  box-shadow: 0 0 12px #00ffff80; /* Enhanced shadow */
+}
+.btn-secondary:active { /* Added active state */
+    transform: scale(0.98);
+    background-color: #00ffff33; /* Slightly more visible background on click */
 }
 
 .error-message {
@@ -135,12 +147,16 @@ select:focus {
   will-change: transform, opacity; /* Optimize animations */
   transform-origin: center center; /* Default for transforms */
   /* transition: transform 0.3s ease, box-shadow 0.3s ease; */ /* Remove as JS will handle transitions */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add transition */
 }
 
-/* .event-card:hover { */
-  /* transform: translateY(-5px); */ /* Remove, JS will handle interactions */
-  /* box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); */ /* Remove */
-/* } */
+.event-card:hover {
+  /* No transform or shadow changes here were in the original CSS for hover */
+  /* This hover might be overridden or affected by JS swipe interactions. */
+  /* Let's add a subtle effect that might not interfere. */
+  transform: translateY(-5px) rotateY(2deg); /* Slight lift and tilt */
+  box-shadow: 0 8px 18px rgba(0, 255, 255, 0.2), 0 0 10px rgba(0, 255, 255, 0.1); /* Enhanced glow */
+}
 
 .event-card h3 {
   color: #00ffff; /* Primary accent color */
@@ -172,7 +188,13 @@ select:focus {
   cursor: pointer;
   border: 2px solid transparent;
   color: #1a1a2e; /* Dark text */
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease; /* Add transform */
+}
+.vote-btn:hover {
+  transform: scale(1.08); /* Slightly more pop */
+}
+.vote-btn:active {
+  transform: scale(0.95); /* Click feedback */
 }
 
 .vote-btn.upvote {
@@ -182,11 +204,13 @@ select:focus {
 }
 .vote-btn.upvote:hover {
   background-color: #00ff0055;
+  /* transform already applied in .vote-btn:hover */
 }
 .vote-btn.upvote.selected {
   background-color: #00ff00; /* Bright green */
   color: #1a1a2e; /* Dark text */
   border-color: #00dd00;
+  transform: scale(1.03); /* Slightly larger when selected */
 }
 
 .vote-btn.neutral {
@@ -196,11 +220,13 @@ select:focus {
 }
 .vote-btn.neutral:hover {
   background-color: #00ffff55;
+  /* transform already applied in .vote-btn:hover */
 }
 .vote-btn.neutral.selected {
   background-color: #00ffff; /* Cyan */
   color: #1a1a2e; /* Dark text */
   border-color: #00eeee;
+  transform: scale(1.03); /* Slightly larger when selected */
 }
 
 .vote-btn.downvote {
@@ -210,11 +236,13 @@ select:focus {
 }
 .vote-btn.downvote:hover {
   background-color: #ff4d4d55;
+  /* transform already applied in .vote-btn:hover */
 }
 .vote-btn.downvote.selected {
   background-color: #ff4d4d; /* Bright red */
   color: #1a1a2e; /* Dark text */
   border-color: #dd3333;
+  transform: scale(1.03); /* Slightly larger when selected */
 }
 
 /* Results Page */
@@ -230,7 +258,16 @@ select:focus {
   padding: 15px;
   margin-bottom: 10px;
   box-shadow: 0 2px 5px rgba(0, 255, 255, 0.05); /* Cyan glow */
+  opacity: 0; /* Start hidden for animation */
+  animation: resultItemAppear 0.5s ease-out forwards;
 }
+
+#results-list li:nth-child(1) { animation-delay: 0.1s; }
+#results-list li:nth-child(2) { animation-delay: 0.2s; }
+#results-list li:nth-child(3) { animation-delay: 0.3s; }
+#results-list li:nth-child(4) { animation-delay: 0.4s; }
+#results-list li:nth-child(5) { animation-delay: 0.5s; }
+/* Add more if more items are typically expected, or accept they animate in groups */
 
 #results-list h3 {
   color: #00ffff; /* Primary accent color */
@@ -322,4 +359,15 @@ select:focus {
   margin-top: 15px;
   text-align: center;
   border: 1px solid #00ff00;
+}
+
+/* Keyframes for Animations */
+@keyframes fadeInSlideUp { /* For page load */
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes resultItemAppear { /* For result list items */
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
 }
