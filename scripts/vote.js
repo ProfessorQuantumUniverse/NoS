@@ -5,9 +5,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const eventsContainer = document.getElementById('event-cards-container');
     const userGreeting = document.getElementById('user-greeting');
     const resultsLink = document.getElementById('results-link');
-    // Der globale Loader-Container bleibt für das initiale Laden
-    const initialLoaderContainer = document.getElementById('loader-container-vote'); 
-    const messageContainerId = 'message-container-vote'; // ID des Nachrichten-Containers
+    const initialLoaderContainer = document.getElementById('loader-container-vote');
+    const messageContainerId = 'message-container-vote';
+
+    // Card stack specific variables
+    let cards = [];
+    let currentCardIndex = 0;
+    let isAnimating = false;
+    let userVotes = {}; // Moved here to be accessible in updateCardStackVisuals
 
     if (!groupCode || !username) {
         window.location.href = 'index.html';
@@ -17,35 +22,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     userGreeting.textContent = `Angemeldet als: ${username} (Gruppe: ${groupCode})`;
     resultsLink.href = `results.html?code=${encodeURIComponent(groupCode)}`;
 
-    showLoader(initialLoaderContainer.id); // Loader für initiales Laden
+    showLoader(initialLoaderContainer.id);
 
     const [eventsResponse, userVotesResponse] = await Promise.all([
         callGoogleScript('getEvents'),
         callGoogleScript('getUserVotes', { groupCode, username })
     ]);
 
-    hideLoader(); // Loader nach initialem Laden ausblenden
+    hideLoader();
 
     if (!eventsResponse.success || !eventsResponse.events) {
-        displayMessage('Fehler beim Laden der Veranstaltungen.', 'error', messageContainerId, 0); // 0 = kein Timeout
+        displayMessage('Fehler beim Laden der Veranstaltungen.', 'error', messageContainerId, 0);
         return;
     }
     if (!userVotesResponse.success) {
         console.warn('Could not load user votes, proceeding without them.');
-        // Optional: displayMessage('Konnte bisherige Stimmen nicht laden.', 'error', messageContainerId);
     }
     
-    const userVotes = userVotesResponse.votes || {};
+    userVotes = userVotesResponse.votes || {}; // Assign to the outer scope variable
 
     if (eventsResponse.events.length === 0) {
         eventsContainer.innerHTML = '<p>Keine Veranstaltungen für die Abstimmung gefunden.</p>';
         return;
     }
 
+    // Create and store card elements
     eventsResponse.events.forEach(event => {
         const card = document.createElement('div');
         card.className = 'event-card';
         card.dataset.eventId = event.id;
+        // Initially hide cards that are not on top of the stack
+        card.style.display = 'none';
+        card.style.position = 'absolute'; // Ensure CSS for absolute positioning is effective
 
         card.innerHTML = `
             <h3>${event.title}</h3>
@@ -57,70 +65,125 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <button class="vote-btn upvote" data-score="1">👍 Rechts (+1)</button>
             </div>
         `;
+
+        // Add to eventsContainer so it's in the DOM for measurements, but hidden
         eventsContainer.appendChild(card);
+        cards.push(card);
 
         const buttons = card.querySelectorAll('.vote-btn');
-        const currentVote = userVotes[event.id];
-
         buttons.forEach(button => {
-            if (parseInt(button.dataset.score) === currentVote) {
-                button.classList.add('selected');
-            }
-
-            button.addEventListener('click', () => { // async hier nicht mehr nötig, da wir nicht mehr awaiten
-                const score = parseInt(button.dataset.score);
-                const previouslySelectedButton = card.querySelector('.vote-btn.selected');
-                
-                // 1. Optimistic UI update: Buttons sofort aktualisieren
-                buttons.forEach(btn => btn.classList.remove('selected'));
-                button.classList.add('selected');
-                
-                // 2. Alten globalen Loader entfernen.
-                // KEIN showLoader() / hideLoader() hier für den einzelnen Vote.
-
-                // 3. Daten im Hintergrund senden
-                callGoogleScript('recordVote', {
-                    groupCode,
-                    username,
-                    eventId: event.id,
-                    score
-                }).then(voteResponse => {
-                    if (voteResponse.success) {
-                        // Lokalen Cache der Stimmen aktualisieren
-                        userVotes[event.id] = score;
-                        let scoreEmoji = score === 1 ? '👍' : score === -1 ? '👎' : '🤷';
-                        displayMessage(`Stimme (${scoreEmoji}) für "${event.title}" gespeichert.`, 'success', messageContainerId);
-                    } else {
-                        // Fehler beim Speichern: UI Rollback
-                        displayMessage(`Fehler: Stimme für "${event.title}" nicht gespeichert. ${voteResponse.message || ''}`, 'error', messageContainerId, 5000);
-                        buttons.forEach(btn => btn.classList.remove('selected')); // Aktuelle Auswahl entfernen
-                        if (previouslySelectedButton) { // Alten Button wieder auswählen, falls vorhanden
-                            previouslySelectedButton.classList.add('selected');
-                        } else if (userVotes[event.id] !== undefined) { // Oder auf den alten Wert aus dem Cache zurücksetzen
-                            const oldScore = userVotes[event.id];
-                            buttons.forEach(btn => {
-                                if (parseInt(btn.dataset.score) === oldScore) {
-                                    btn.classList.add('selected');
-                                }
-                            });
-                        }
-                    }
-                }).catch(error => {
-                    // Netzwerkfehler oder Skriptfehler: UI Rollback
-                    displayMessage(`Netzwerk-/Skriptfehler beim Speichern für "${event.title}". Bitte erneut versuchen. (${error.message})`, 'error', messageContainerId, 5000);
-                    buttons.forEach(btn => btn.classList.remove('selected')); // Aktuelle Auswahl entfernen
-                    if (previouslySelectedButton) { // Alten Button wieder auswählen, falls vorhanden
-                        previouslySelectedButton.classList.add('selected');
-                    } else if (userVotes[event.id] !== undefined) {
-                         const oldScore = userVotes[event.id];
-                         buttons.forEach(btn => {
-                             if (parseInt(btn.dataset.score) === oldScore) {
-                                 btn.classList.add('selected');
-                             }
-                         });
-                    }
-                });
-            });
+            button.addEventListener('click', () => handleVoteClick(event, card, button, buttons));
         });
     });
+
+    function updateCardStackVisuals() {
+        if (currentCardIndex >= cards.length) {
+            eventsContainer.innerHTML = '<p>Alle Veranstaltungen bewertet! 🎉</p>';
+            // Optionally, show a link to results or a refresh button
+            return;
+        }
+
+        cards.forEach((card, index) => {
+            const isTopCard = index === currentCardIndex;
+            const isSecondCard = index === currentCardIndex + 1;
+            const isThirdCard = index === currentCardIndex + 2;
+
+            // Reset pointer events for all cards first
+            card.style.pointerEvents = 'none';
+
+
+            if (isTopCard) {
+                card.style.display = '';
+                card.style.transform = 'translate(0, 0) scale(1) rotate(0deg)';
+                card.style.opacity = '1';
+                card.style.zIndex = cards.length;
+                card.style.pointerEvents = 'auto'; // Enable interaction for the top card
+
+                // Apply pre-existing vote if any
+                const eventId = card.dataset.eventId;
+                const currentVote = userVotes[eventId];
+                const buttons = card.querySelectorAll('.vote-btn');
+                buttons.forEach(btn => {
+                    btn.classList.remove('selected');
+                    if (parseInt(btn.dataset.score) === currentVote) {
+                        btn.classList.add('selected');
+                    }
+                });
+
+            } else if (isSecondCard) {
+                card.style.display = '';
+                card.style.transform = 'translateY(10px) scale(0.95)';
+                card.style.opacity = '0.7';
+                card.style.zIndex = cards.length - 1;
+            } else if (isThirdCard) {
+                card.style.display = '';
+                card.style.transform = 'translateY(20px) scale(0.9)';
+                card.style.opacity = '0.4';
+                card.style.zIndex = cards.length - 2;
+            } else {
+                card.style.display = 'none'; // Hide cards further down the stack
+                card.style.opacity = '0';
+            }
+        });
+    }
+
+    function handleVoteClick(event, card, button, buttons) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const score = parseInt(button.dataset.score);
+        const previouslySelectedButton = card.querySelector('.vote-btn.selected');
+
+        // Optimistic UI update for button selection
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+
+        // Determine swipe direction for animation
+        let swipeTransform = '';
+        if (score === -1) { // Downvote (left)
+            swipeTransform = 'translateX(-150%) rotate(-15deg)';
+        } else if (score === 1) { // Upvote (right)
+            swipeTransform = 'translateX(150%) rotate(15deg)';
+        } else { // Neutral (animate down slightly, or no animation, then next)
+            swipeTransform = 'translateY(50px) scale(0.9)'; // Example for neutral
+        }
+
+        card.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
+        card.style.transform = swipeTransform;
+        card.style.opacity = '0';
+
+        card.addEventListener('transitionend', () => {
+            card.style.display = 'none'; // Hide after animation
+            currentCardIndex++;
+            updateCardStackVisuals();
+            isAnimating = false;
+        }, { once: true });
+
+        // Send data to Google Script
+        callGoogleScript('recordVote', {
+            groupCode,
+            username,
+            eventId: event.id,
+            score
+        }).then(voteResponse => {
+            if (voteResponse.success) {
+                userVotes[event.id] = score; // Update local cache
+                let scoreEmoji = score === 1 ? '👍' : score === -1 ? '👎' : '🤷';
+                displayMessage(`Stimme (${scoreEmoji}) für "${event.title}" gespeichert.`, 'success', messageContainerId);
+            } else {
+                displayMessage(`Fehler: Stimme für "${event.title}" nicht gespeichert. ${voteResponse.message || ''}`, 'error', messageContainerId, 5000);
+                // Rollback UI for button selection (card is already animating out)
+                // The next card will show the correct state based on userVotes.
+                // If the same card were to be shown again, more complex rollback needed.
+            }
+        }).catch(error => {
+            displayMessage(`Netzwerk-/Skriptfehler beim Speichern für "${event.title}". (${error.message})`, 'error', messageContainerId, 5000);
+            // Rollback UI for button selection
+        });
+    }
+
+    // Initial display
+    if (cards.length > 0) {
+        updateCardStackVisuals();
+    }
 });
