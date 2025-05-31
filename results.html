@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Night - Ergebnisse</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container" style="max-width: 700px;">
+        <div class="page-header">
+             <h1 id="results-title">Ergebnisse</h1>
+             <a href="vote.html" id="back-to-vote-link" class="btn btn-secondary" style="width:auto; display:none;">Zurück zur Abstimmung</a>
+        </div>
+       
+        <div id="loader-container-results"></div>
+        <ul id="results-list">
+            <!-- Ergebnisse werden hier per JS eingefügt -->
+        </ul>
+        <div id="message-container-results" style="margin-top:15px;"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="scripts/sheets.js"></script>
+    <script src="scripts/results.js"></script>
+</body>
+</html>

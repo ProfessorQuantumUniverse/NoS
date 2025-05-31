@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Night - Abstimmen</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h2>Veranstaltungen Bewerten</h2>
+            <a href="#" id="results-link" class="btn btn-secondary" style="width:auto;">Ergebnisse Anzeigen</a>
+        </div>
+        <p id="user-greeting" style="text-align:center; margin-bottom:20px;"></p>
+        <div id="loader-container-vote"></div>
+        <div id="event-cards-container">
+            <!-- Event-Karten werden hier per JS eingefügt -->
+        </div>
+        <div id="message-container-vote" style="margin-top:15px;"></div>
+
+    </div>
+
+    <script src="config.js"></script>
+    <script src="scripts/sheets.js"></script>
+    <script src="scripts/vote.js"></script>
+</body>
+</html>
