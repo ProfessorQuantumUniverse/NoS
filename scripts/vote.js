@@ -61,9 +61,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             <p><strong>Zeit:</strong> ${event.time}</p>
             <p><strong>Ort:</strong> ${event.location}</p>
             <div class="vote-buttons">
-                <button class="vote-btn downvote" data-score="-1">👎 Links (-1)</button>
+                <button class="vote-btn downvote" data-score="-1">👎 Nein!!! (-1)</button>
                 <button class="vote-btn neutral" data-score="0">🤷 Egal (0)</button>
-                <button class="vote-btn upvote" data-score="1">👍 Rechts (+1)</button>
+                <button class="vote-btn upvote" data-score="1">👍 Jaaaaa!!! (+1)</button>
             </div>
         `;
 
