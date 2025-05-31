@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const resultsLink = document.getElementById('results-link');
     const initialLoaderContainer = document.getElementById('loader-container-vote');
     const messageContainerId = 'message-container-vote';
+    const progressBarFill = document.getElementById('progress-bar-fill');
 
     // Card stack specific variables
     let cards = [];
@@ -77,10 +78,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     function updateCardStackVisuals() {
+        if (!progressBarFill) { // Should be available, but good to check
+            console.warn('Progress bar fill element not found');
+            // We can still continue to update cards, just not the progress bar
+        }
+
         if (currentCardIndex >= cards.length) {
             eventsContainer.innerHTML = '<p>Alle Veranstaltungen bewertet! 🎉</p>';
+            if (progressBarFill) progressBarFill.style.width = '100%'; // Ensure 100% when done
             // Optionally, show a link to results or a refresh button
             return;
+        }
+
+        if (progressBarFill) {
+            const progress = cards.length > 0 ? ((currentCardIndex) / cards.length) * 100 : 0;
+            progressBarFill.style.width = progress + '%';
         }
 
         cards.forEach((card, index) => {
