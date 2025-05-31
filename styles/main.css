@@ -253,6 +253,23 @@ select:focus {
   100% { transform: rotate(360deg); }
 }
 
+/* Progress Bar Styles */
+#progress-bar-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  height: 12px;
+}
+
+#progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background-color: #3498db;
+  border-radius: 4px;
+  transition: width 0.3s ease-in-out;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   body {
