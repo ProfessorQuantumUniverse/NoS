@@ -44,15 +44,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Calculate Raw Stats
     let eventScores = {};
-    events.forEach(e => eventScores[e.id] = { id: e.id, title: e.title, event: e, baseScore: 0, weightScore: 0, totalScore: 0 });
+    events.forEach(e => eventScores[e.id] = { 
+        id: e.id, title: e.title, event: e, 
+        baseScore: 0, weightScore: 0, totalScore: 0,
+        proUsers: [], conUsers: [], userWeights: {}
+    });
 
     votes.forEach(v => {
-        if (v.score === 1) eventScores[v.eventId].baseScore += 1;
-        if (v.score === -1) eventScores[v.eventId].baseScore -= 1;
+        if (v.score === 1) {
+            eventScores[v.eventId].baseScore += 1;
+            eventScores[v.eventId].proUsers.push(v.username);
+        }
+        if (v.score === -1) {
+            eventScores[v.eventId].baseScore -= 1;
+            eventScores[v.eventId].conUsers.push(v.username);
+        }
     });
 
     weights.forEach(w => {
+        if (!eventScores[w.eventId]) return;
         eventScores[w.eventId].weightScore += w.weight;
+        eventScores[w.eventId].userWeights[w.username] = w.weight;
     });
 
     events.forEach(e => {
@@ -90,8 +102,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         
         sortedItems.forEach(item => {
-            schedHtml += `<li><strong>${item.start} - ${item.end}</strong>: ${item.event.title} <em>(${item.event.location})</em> [Typ: ${item.event.type}]</li>`;
+            const evData = eventScores[item.event.id];
+            
+            // Format Pro/Con Details
+            let proText = evData.proUsers.map(u => {
+                let w = evData.userWeights[u];
+                return w ? `${u} (${w}★)` : u;
+            }).join(', ');
+            
+            let conText = evData.conUsers.join(', ');
+            
+            let voteInfo = '';
+            if (proText) voteInfo += `<span style="color: #4CAF50;">Pro: ${proText}</span>`;
+            if (conText) voteInfo += (voteInfo ? ' | ' : '') + `<span style="color: #F44336;">Contra: ${conText}</span>`;
+
+            schedHtml += `<li>
+                <strong>${item.start} - ${item.end}</strong>: ${item.event.title} 
+                <em>(${item.event.location})</em> [Typ: ${item.event.type}]
+                <br><small>${voteInfo}</small>
+            </li>`;
         });
+        
+        // Find left-out events
+        let includedEventIds = new Set(sched.items.map(i => i.event.id));
+        let leftOut = Object.values(eventScores)
+            .filter(e => e.totalScore > 0 && !includedEventIds.has(e.id))
+            .sort((a,b) => b.totalScore - a.totalScore);
+            
+        if (leftOut.length > 0) {
+            schedHtml += `<hr><li style="opacity: 0.7;"><strong>Nicht aufgenommen (Trotz Votes):</strong><br>`;
+            let leftOutTexts = leftOut.slice(0, 8).map(e => `${e.title} (Score: ${e.totalScore})`);
+            schedHtml += `<small>${leftOutTexts.join(', ')} ...</small></li>`;
+        }
         
         schedHtml += `</ul></div>`;
     });
@@ -106,8 +148,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         candidateEvents.sort((a,b) => scoresDict[b.id].totalScore - scoresDict[a.id].totalScore);
         
         // Separate top events as priority, others as fillers
-        let priorityEvents = candidateEvents.slice(0, 15);
-        let fillerEvents = candidateEvents.slice(15, 60); // Check up to 45 fillers
+        let priorityEvents = candidateEvents.slice(0, 25);
+        let fillerEvents = candidateEvents.slice(25, 75); // Check up to 50 fillers
 
         function parseTime(tStr) {
             const [h, m] = tStr.split(':').map(Number);
