@@ -69,10 +69,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         let times = event.timeSlots.map(t => `${t.start}-${t.end}`).join(', ');
 
         card.innerHTML = `
-            <h3>${event.title}</h3>
-            <p><strong>Typ:</strong> ${event.type}</p>
-            <p><strong>Zeit:</strong> ${times}</p>
-            <p><strong>Ort:</strong> ${event.location}</p>
+            <div class="event-card-content">
+                <h3>${event.title}</h3>
+                <p><strong>Typ:</strong> ${event.type}</p>
+                <p><strong>Zeit:</strong> ${times}</p>
+                <p><strong>Ort:</strong> ${event.location}</p>
+            </div>
             <div class="vote-buttons">
                 <button class="vote-btn downvote" data-score="-1">👎 Nein</button>
                 <button class="vote-btn upvote" data-score="1">👍 Ja</button>
@@ -108,19 +110,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (isTopCard) {
                 card.style.display = '';
-                card.style.transform = 'translate(0, 0) scale(1) rotate(0deg)';
+                card.style.transform = 'translateY(0) scale(1) rotate(0deg)';
                 card.style.opacity = '1';
                 card.style.zIndex = cards.length;
                 card.style.pointerEvents = 'auto';
             } else if (isSecondCard) {
                 card.style.display = '';
-                card.style.transform = 'translateY(10px) scale(0.95)';
-                card.style.opacity = '0.7';
+                card.style.transform = 'translateY(15px) scale(0.95)';
+                card.style.opacity = '0.8';
                 card.style.zIndex = cards.length - 1;
             } else if (isThirdCard) {
                 card.style.display = '';
-                card.style.transform = 'translateY(20px) scale(0.9)';
-                card.style.opacity = '0.4';
+                card.style.transform = 'translateY(30px) scale(0.9)';
+                card.style.opacity = '0.5';
                 card.style.zIndex = cards.length - 2;
             } else {
                 card.style.display = 'none';

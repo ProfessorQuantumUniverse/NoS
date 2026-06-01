@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    const resultsList = document.getElementById('results-list');
+    const resultsList = document.getElementById('results-container');
     const title = document.getElementById('results-title');
     title.textContent = `Ergebnisse & Master-Plan (Gruppe: ${groupCode})`;
 
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // We will assume 4 as mentioned in the prompt, or allow processing anyway if requested?
     // Let's show a prominent message if less than 4 users have finished
     if (uniqueUsers.size < 4) {
-        displayMessage(`Warte auf deine Gruppe! Bisher haben nur ${uniqueUsers.size} von 4 Personen abgestimmt.`, 'success', 'message-container-results', 0);
+        displayMessage(`Warte auf deine Gruppe! Bisher haben nur ${uniqueUsers.size} von 4 Personen abgestimmt.`, 'info', 'message-container-results', 0);
         // We can still show intermediate results!
     } else {
         displayMessage('Alle 4 Personen haben abgestimmt! Der finale Master-Plan ist bereit.', 'success', 'message-container-results', 5000);
@@ -75,13 +75,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     let rankedEvents = Object.values(eventScores).sort((a,b) => b.totalScore - a.totalScore);
 
     // Render Raw Stats
-    let rawHtml = `<h3>Beliebteste Veranstaltungen (Raw Stats)</h3><ul>`;
+    let rawHtml = `<h3>Beliebteste Veranstaltungen</h3><ul id="results-list">`;
     rankedEvents.slice(0, 10).forEach(r => {
         if(r.totalScore > 0) {
-            rawHtml += `<li><strong>${r.title}</strong> (Score: ${r.totalScore})</li>`;
+            rawHtml += `<li><strong>${r.title}</strong><br><span style="color:var(--accent-cyan)">Score: ${r.totalScore}</span></li>`;
         }
     });
-    rawHtml += `</ul><hr>`;
+    rawHtml += `</ul><hr style="border:0; height:1px; background:rgba(0,255,255,0.2); margin:20px 0;">`;
 
     // --- ALGORITHM ---
     // Generate Schedules
@@ -89,9 +89,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let schedHtml = `<h3>Top 5 Vorgeschlagene Zeitpläne (Auto-Scheduler)</h3>`;
     generatedSchedules.forEach((sched, index) => {
-        schedHtml += `<div style="background:var(--card-bg); margin:10px 0; padding:15px; border-radius:5px;">
-            <h4>Option ${index + 1} (Total Score: ${sched.totalScore})</h4>
-            <ul>`;
+        schedHtml += `<div class="schedule-card">
+            <h4>Option ${index + 1} <span style="font-size:0.8em; color:var(--text-muted)">(Score: ${sched.totalScore})</span></h4>
+            <ul style="list-style:none; padding:0;">`;
         
         let sortedItems = sched.items.sort((a,b) => {
             const timeA = a.start.split(':').map(Number);
@@ -113,12 +113,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             let conText = evData.conUsers.join(', ');
             
             let voteInfo = '';
-            if (proText) voteInfo += `<span style="color: #4CAF50;">Pro: ${proText}</span>`;
-            if (conText) voteInfo += (voteInfo ? ' | ' : '') + `<span style="color: #F44336;">Contra: ${conText}</span>`;
+            if (proText) voteInfo += `<span style="color: var(--accent-green);">Pro: ${proText}</span>`;
+            if (conText) voteInfo += (voteInfo ? ' | ' : '') + `<span style="color: var(--accent-red);">Contra: ${conText}</span>`;
 
-            schedHtml += `<li>
-                <strong>${item.start} - ${item.end}</strong>: ${item.event.title} 
-                <em>(${item.event.location})</em> [Typ: ${item.event.type}]
+            schedHtml += `<li style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <strong style="color:var(--accent-cyan)">${item.start} - ${item.end}</strong>: <span style="font-weight:500;">${item.event.title}</span> 
+                <br><em style="color:var(--text-muted); font-size:0.9em;">📍 ${item.event.location} [Typ: ${item.event.type}]</em>
                 <br><small>${voteInfo}</small>
             </li>`;
         });

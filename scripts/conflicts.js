@@ -89,7 +89,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         item.className = 'conflict-item';
         item.innerHTML = `
             <h3>${event.title}</h3>
-            <p><strong>Typ:</strong> ${event.type} | <strong>Ort:</strong> ${event.location}</p>
+            <p><em style="color:var(--text-muted); font-size:0.9em;">📍 ${event.location} [Typ: ${event.type}]</em></p>
+            <label style="font-size:0.85em; color:var(--text-muted); margin-bottom:5px;">Wichtigkeit:</label>
             <select class="weight-select" data-event-id="${event.id}">
                 <option value="1">Egal (1 Stern)</option>
                 <option value="2">Nice-to-have (2 Sterne)</option>
