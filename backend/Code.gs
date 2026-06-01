@@ -29,11 +29,11 @@ function doPost(e) {
       case 'getGroupVotesAndWeights':
         result = getGroupVotesAndWeights(payload.groupCode);
         break;
-      case 'setUserStatus':
-        result = setUserStatus(payload.groupCode, payload.username, payload.phase);
-        break;
       case 'getGroupStatus':
         result = getGroupStatus(payload.groupCode);
+        break;
+      case 'setUserPhase':
+        result = setUserPhase(payload.groupCode, payload.username, payload.phase);
         break;
       default:
         result = { success: false, message: 'Unknown action' };
@@ -51,10 +51,9 @@ function getSheetByName(name) {
   let sheet = ss.getSheetByName(name);
   if (!sheet) {
     sheet = ss.insertSheet(name);
-    if (name === "Users") sheet.appendRow(["GroupCode", "Username", "Password"]);
+    if (name === "Users") sheet.appendRow(["GroupCode", "Username", "Password", "Phase1Done", "Phase2Done"]);
     if (name === "Votes") sheet.appendRow(["GroupCode", "Username", "EventId", "Score"]);
     if (name === "Weights") sheet.appendRow(["GroupCode", "Username", "EventId", "Weight"]);
-    if (name === "Status") sheet.appendRow(["GroupCode", "Username", "Phase"]);
   }
   return sheet;
 }
@@ -161,32 +160,35 @@ function getGroupVotesAndWeights(groupCode) {
 }
 
 
-function setUserStatus(groupCode, username, phase) {
-  const sheet = getSheetByName("Status");
+function setUserPhase(groupCode, username, phase) {
+  const sheet = getSheetByName("Users");
   const data = sheet.getDataRange().getValues();
   
   for (let i = 1; i < data.length; i++) {
     if (data[i][0] === groupCode && data[i][1] === username) {
-      sheet.getRange(i + 1, 3).setValue(phase);
+      if (phase === 1) sheet.getRange(i + 1, 4).setValue(true);
+      if (phase === 2) sheet.getRange(i + 1, 5).setValue(true);
       return { success: true };
     }
   }
-  
-  sheet.appendRow([groupCode, username, phase]);
-  return { success: true };
+  return { success: false, message: "User not found" };
 }
 
 function getGroupStatus(groupCode) {
-  const sheet = getSheetByName("Status");
+  const sheet = getSheetByName("Users");
   const data = sheet.getDataRange().getValues();
-  let statuses = {};
+  let users = [];
   
   for (let i = 1; i < data.length; i++) {
     if (data[i][0] === groupCode) {
-      statuses[data[i][1]] = data[i][2];
+      users.push({
+        username: data[i][1],
+        phase1: data[i][3] === true,
+        phase2: data[i][4] === true
+      });
     }
   }
   
-  return { success: true, statuses: statuses };
+  return { success: true, users: users };
 }
 

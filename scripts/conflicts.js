@@ -16,10 +16,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     showLoader(loaderContainer.id);
 
-    const [eventsResponse, userVotesResponse, statusResInitial] = await Promise.all([
+    const [eventsResponse, userVotesResponse] = await Promise.all([
         fetchLocalEvents(),
-        callGoogleScript('getUserVotes', { groupCode, username }),
-        callGoogleScript('getGroupStatus', { groupCode })
+        callGoogleScript('getUserVotes', { groupCode, username })
     ]);
 
     hideLoader();
@@ -27,14 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!eventsResponse.success || !userVotesResponse.success) {
         displayMessage('Fehler beim Laden der Daten.', 'error', messageContainerId, 0);
         return;
-    }
-
-    if (statusResInitial.success) {
-        const statuses = statusResInitial.statuses || {};
-        if (statuses[username] && statuses[username] >= 2) {
-            checkAndProceedToResults();
-            return;
-        }
     }
 
     const events = eventsResponse.events;
@@ -71,49 +62,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    async function checkAndProceedToResults() {
+    async function finishPhase2() {
         showLoader(loaderContainer.id);
-        conflictsContainer.style.display = 'none';
-        if (saveBtn) saveBtn.style.display = 'none';
-        
-        await callGoogleScript('setUserStatus', { groupCode, username, phase: 2 });
+        await callGoogleScript('setUserPhase', { groupCode, username, phase: 2 });
         const statusRes = await callGoogleScript('getGroupStatus', { groupCode });
         hideLoader();
         
         if (statusRes.success) {
-            const statuses = statusRes.statuses || {};
-            let phase2Count = 0;
-            for (let key in statuses) {
-                if (statuses[key] >= 2) phase2Count++;
-            }
-            const messageContainer = document.getElementById(messageContainerId);
-            messageContainer.innerHTML = '';
-            
-            if (phase2Count < 4) {
-                displayMessage(`Fast geschafft! Warte auf deine Freunde (${phase2Count}/4 haben Phase 2 abgeschlossen). Bitte lade die Seite in ein paar Minuten neu.`, 'success', messageContainerId, 0);
-                
-                const btn = document.createElement('button');
-                btn.className = 'btn';
-                btn.textContent = 'Status aktualisieren';
-                btn.style.marginTop = '20px';
-                btn.onclick = () => window.location.reload();
-                messageContainer.appendChild(btn);
-            } else {
-                displayMessage(`Alle 4 haben Phase 2 abgeschlossen!`, 'success', messageContainerId, 0);
-                const btn = document.createElement('button');
-                btn.className = 'btn';
-                btn.textContent = 'Zum Master-Plan (Phase 3)';
-                btn.style.marginTop = '20px';
-                btn.onclick = () => window.location.href = 'results.html';
-                messageContainer.appendChild(btn);
-            }
+            const numPhase2 = statusRes.users.filter(u => u.phase2).length;
+            if (numPhase2 >= 4) window.location.href = 'results.html';
+            else window.location.href = 'wait.html?phase=2';
         } else {
-            displayMessage('Fehler beim Abrufen des Gruppenstatus.', 'error', messageContainerId, 0);
+            window.location.href = 'wait.html?phase=2';
         }
     }
 
     if (conflictSet.size === 0) {
-        checkAndProceedToResults();
+        finishPhase2();
         return;
     }
 
@@ -152,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         hideLoader();
 
         if (res.success) {
-            checkAndProceedToResults();
+            finishPhase2();
         } else {
             displayMessage('Fehler beim Speichern der Gewichtungen.', 'error', messageContainerId);
         }

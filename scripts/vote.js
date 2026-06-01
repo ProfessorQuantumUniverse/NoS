@@ -39,40 +39,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const remainingEvents = eventsResponse.events.filter(e => userVotes[e.id] === undefined);
 
-    async function checkAndProceedToConflicts() {
+    async function finishPhase1() {
         showLoader(initialLoaderContainer.id);
-        eventsContainer.style.display = 'none';
-        
-        await callGoogleScript('setUserStatus', { groupCode, username, phase: 1 });
+        await callGoogleScript('setUserPhase', { groupCode, username, phase: 1 });
         const statusRes = await callGoogleScript('getGroupStatus', { groupCode });
         hideLoader();
         
         if (statusRes.success) {
-            const statuses = statusRes.statuses || {};
-            let phase1Count = 0;
-            for (let key in statuses) {
-                if (statuses[key] >= 1) phase1Count++;
-            }
-            if (phase1Count < 4) {
-                displayMessage(`Du bist fertig! Warte auf deine Freunde (${phase1Count}/4 haben Phase 1 abgeschlossen). Bitte lade die Seite in ein paar Minuten neu.`, 'success', messageContainerId, 0);
-                
-                // Optional: Simple polling or refresh button
-                const btn = document.createElement('button');
-                btn.className = 'btn';
-                btn.textContent = 'Status aktualisieren';
-                btn.style.marginTop = '20px';
-                btn.onclick = () => window.location.reload();
-                document.getElementById(messageContainerId).appendChild(btn);
-            } else {
-                window.location.href = 'conflicts.html';
-            }
+            const numPhase1 = statusRes.users.filter(u => u.phase1).length;
+            if (numPhase1 >= 4) window.location.href = 'conflicts.html';
+            else window.location.href = 'wait.html?phase=1';
         } else {
-            displayMessage('Fehler beim Abrufen des Gruppenstatus.', 'error', messageContainerId, 0);
+            window.location.href = 'wait.html?phase=1';
         }
     }
 
     if (remainingEvents.length === 0) {
-        checkAndProceedToConflicts();
+        finishPhase1();
         return;
     }
 
@@ -107,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function updateCardStackVisuals() {
         if (currentCardIndex >= cards.length) {
-            checkAndProceedToConflicts();
+            finishPhase1();
             return;
         }
 

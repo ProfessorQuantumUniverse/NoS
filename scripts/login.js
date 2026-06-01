@@ -22,13 +22,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const response = await callGoogleScript('validateLogin', { groupCode, username, password });
-        hideLoader();
+        
 
         if (response.success) {
             sessionStorage.setItem('scienceNightGroupCode', groupCode);
             sessionStorage.setItem('scienceNightUsername', username);
-            window.location.href = 'vote.html';
+
+            const statusRes = await callGoogleScript('getGroupStatus', { groupCode });
+            hideLoader();
+
+            if (statusRes.success) {
+                const users = statusRes.users;
+                const myStatus = users.find(u => u.username === username);
+                const numPhase1 = users.filter(u => u.phase1).length;
+                const numPhase2 = users.filter(u => u.phase2).length;
+
+                if (myStatus && myStatus.phase2) {
+                    if (numPhase2 >= 4) window.location.href = 'results.html';
+                    else window.location.href = 'wait.html?phase=2';
+                } else if (myStatus && myStatus.phase1) {
+                    if (numPhase1 >= 4) window.location.href = 'conflicts.html';
+                    else window.location.href = 'wait.html?phase=1';
+                } else {
+                    window.location.href = 'vote.html';
+                }
+            } else {
+                window.location.href = 'vote.html';
+            }
         } else {
+            hideLoader();
             displayMessage(response.message || 'Login fehlgeschlagen. Bitte überprüfe deine Eingaben.', 'error', 'message-container');
         }
     });
