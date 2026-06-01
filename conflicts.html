@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Night - Konflikte auflösen</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .conflict-item {
+            background-color: var(--card-bg);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .weight-select {
+            margin-top: 10px;
+            padding: 8px;
+            width: 100%;
+            border-radius: 4px;
+            background: #2a2a40;
+            color: #fff;
+            border: 1px solid #4d4d73;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h2>Konflikt-Auflösung</h2>
+        </div>
+        <p>Einige deiner "Ja"-Votings überschneiden sich zeitlich. Bitte bewerte, wie wichtig dir diese Veranstaltungen sind.</p>
+        <p id="user-greeting" style="text-align:center; margin-bottom:20px;"></p>
+        <div id="loader-container-conflicts"></div>
+        
+        <div id="conflicts-container"></div>
+        
+        <button id="save-weights-btn" class="btn" style="display:none; margin-top: 20px;">Gewichtungen Speichern & Zum Master-Plan</button>
+        <div id="message-container-conflicts" style="margin-top:15px;"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="scripts/sheets.js"></script>
+    <script src="scripts/conflicts.js"></script>
+</body>
+</html>

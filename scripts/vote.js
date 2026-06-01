@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', async () => {
     const groupCode = sessionStorage.getItem('scienceNightGroupCode');
     const username = sessionStorage.getItem('scienceNightUsername');
@@ -9,11 +8,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const messageContainerId = 'message-container-vote';
     const progressBarFill = document.getElementById('progress-bar-fill');
 
-    // Card stack specific variables
     let cards = [];
     let currentCardIndex = 0;
     let isAnimating = false;
-    let userVotes = {}; // Moved here to be accessible in updateCardStackVisuals
+    let userVotes = {};
 
     if (!groupCode || !username) {
         window.location.href = 'index.html';
@@ -26,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     showLoader(initialLoaderContainer.id);
 
     const [eventsResponse, userVotesResponse] = await Promise.all([
-        callGoogleScript('getEvents'),
+        fetchLocalEvents(),
         callGoogleScript('getUserVotes', { groupCode, username })
     ]);
 
@@ -36,57 +34,80 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayMessage('Fehler beim Laden der Veranstaltungen.', 'error', messageContainerId, 0);
         return;
     }
-    if (!userVotesResponse.success) {
-        console.warn('Could not load user votes, proceeding without them.');
-    }
     
-    userVotes = userVotesResponse.votes || {}; // Assign to the outer scope variable
+    userVotes = userVotesResponse.votes || {};
 
-    if (eventsResponse.events.length === 0) {
-        eventsContainer.innerHTML = '<p>Keine Veranstaltungen für die Abstimmung gefunden.</p>';
+    const remainingEvents = eventsResponse.events.filter(e => userVotes[e.id] === undefined);
+
+    async function checkAndProceedToConflicts() {
+        showLoader(initialLoaderContainer.id);
+        eventsContainer.style.display = 'none';
+        
+        await callGoogleScript('setUserStatus', { groupCode, username, phase: 1 });
+        const statusRes = await callGoogleScript('getGroupStatus', { groupCode });
+        hideLoader();
+        
+        if (statusRes.success) {
+            const statuses = statusRes.statuses || {};
+            let phase1Count = 0;
+            for (let key in statuses) {
+                if (statuses[key] >= 1) phase1Count++;
+            }
+            if (phase1Count < 4) {
+                displayMessage(`Du bist fertig! Warte auf deine Freunde (${phase1Count}/4 haben Phase 1 abgeschlossen). Bitte lade die Seite in ein paar Minuten neu.`, 'success', messageContainerId, 0);
+                
+                // Optional: Simple polling or refresh button
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.textContent = 'Status aktualisieren';
+                btn.style.marginTop = '20px';
+                btn.onclick = () => window.location.reload();
+                document.getElementById(messageContainerId).appendChild(btn);
+            } else {
+                window.location.href = 'conflicts.html';
+            }
+        } else {
+            displayMessage('Fehler beim Abrufen des Gruppenstatus.', 'error', messageContainerId, 0);
+        }
+    }
+
+    if (remainingEvents.length === 0) {
+        checkAndProceedToConflicts();
         return;
     }
 
-    // Create and store card elements
-    eventsResponse.events.forEach(event => {
+    remainingEvents.forEach(event => {
         const card = document.createElement('div');
         card.className = 'event-card';
         card.dataset.eventId = event.id;
-        // Initially hide cards that are not on top of the stack
         card.style.display = 'none';
-        card.style.position = 'absolute'; // Ensure CSS for absolute positioning is effective
+        card.style.position = 'absolute';
+
+        let times = event.timeSlots.map(t => `${t.start}-${t.end}`).join(', ');
 
         card.innerHTML = `
             <h3>${event.title}</h3>
-            <p><strong>Zeit:</strong> ${event.time}</p>
+            <p><strong>Typ:</strong> ${event.type}</p>
+            <p><strong>Zeit:</strong> ${times}</p>
             <p><strong>Ort:</strong> ${event.location}</p>
             <div class="vote-buttons">
-                <button class="vote-btn downvote" data-score="-1">👎 Nein!!! (-1)</button>
-                <button class="vote-btn neutral" data-score="0">🤷 Egal (0)</button>
-                <button class="vote-btn upvote" data-score="1">👍 Jaaaaa!!! (+1)</button>
+                <button class="vote-btn downvote" data-score="-1">👎 Nein</button>
+                <button class="vote-btn upvote" data-score="1">👍 Ja</button>
             </div>
         `;
 
-        // Add to eventsContainer so it's in the DOM for measurements, but hidden
         eventsContainer.appendChild(card);
         cards.push(card);
 
         const buttons = card.querySelectorAll('.vote-btn');
         buttons.forEach(button => {
-            button.addEventListener('click', () => handleVoteClick(event, card, button, buttons));
+            button.addEventListener('click', () => handleVoteClick(event, card, button));
         });
     });
 
     function updateCardStackVisuals() {
-        if (!progressBarFill) { // Should be available, but good to check
-            console.warn('Progress bar fill element not found');
-            // We can still continue to update cards, just not the progress bar
-        }
-
         if (currentCardIndex >= cards.length) {
-            eventsContainer.innerHTML = '<p>Alle Veranstaltungen bewertet! 🎉</p>';
-            if (progressBarFill) progressBarFill.style.width = '100%'; // Ensure 100% when done
-            // Optionally, show a link to results or a refresh button
+            checkAndProceedToConflicts();
             return;
         }
 
@@ -100,28 +121,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const isSecondCard = index === currentCardIndex + 1;
             const isThirdCard = index === currentCardIndex + 2;
 
-            // Reset pointer events for all cards first
             card.style.pointerEvents = 'none';
-
 
             if (isTopCard) {
                 card.style.display = '';
                 card.style.transform = 'translate(0, 0) scale(1) rotate(0deg)';
                 card.style.opacity = '1';
                 card.style.zIndex = cards.length;
-                card.style.pointerEvents = 'auto'; // Enable interaction for the top card
-
-                // Apply pre-existing vote if any
-                const eventId = card.dataset.eventId;
-                const currentVote = userVotes[eventId];
-                const buttons = card.querySelectorAll('.vote-btn');
-                buttons.forEach(btn => {
-                    btn.classList.remove('selected');
-                    if (parseInt(btn.dataset.score) === currentVote) {
-                        btn.classList.add('selected');
-                    }
-                });
-
+                card.style.pointerEvents = 'auto';
             } else if (isSecondCard) {
                 card.style.display = '';
                 card.style.transform = 'translateY(10px) scale(0.95)';
@@ -133,68 +140,38 @@ document.addEventListener('DOMContentLoaded', async () => {
                 card.style.opacity = '0.4';
                 card.style.zIndex = cards.length - 2;
             } else {
-                card.style.display = 'none'; // Hide cards further down the stack
+                card.style.display = 'none';
                 card.style.opacity = '0';
             }
         });
     }
 
-    function handleVoteClick(event, card, button, buttons) {
+    function handleVoteClick(event, card, button) {
         if (isAnimating) return;
         isAnimating = true;
 
         const score = parseInt(button.dataset.score);
-        const previouslySelectedButton = card.querySelector('.vote-btn.selected');
-
-        // Optimistic UI update for button selection
-        buttons.forEach(btn => btn.classList.remove('selected'));
-        button.classList.add('selected');
-
-        // Determine swipe direction for animation
-        let swipeTransform = '';
-        if (score === -1) { // Downvote (left)
-            swipeTransform = 'translateX(-150%) rotate(-15deg)';
-        } else if (score === 1) { // Upvote (right)
-            swipeTransform = 'translateX(150%) rotate(15deg)';
-        } else { // Neutral (animate down slightly, or no animation, then next)
-            swipeTransform = 'translateY(50px) scale(0.9)'; // Example for neutral
-        }
+        let swipeTransform = score === -1 ? 'translateX(-150%) rotate(-15deg)' : 'translateX(150%) rotate(15deg)';
 
         card.style.transition = 'transform 0.5s ease-out, opacity 0.5s ease-out';
         card.style.transform = swipeTransform;
         card.style.opacity = '0';
 
         card.addEventListener('transitionend', () => {
-            card.style.display = 'none'; // Hide after animation
+            card.style.display = 'none';
             currentCardIndex++;
             updateCardStackVisuals();
             isAnimating = false;
         }, { once: true });
 
-        // Send data to Google Script
         callGoogleScript('recordVote', {
             groupCode,
             username,
             eventId: event.id,
             score
-        }).then(voteResponse => {
-            if (voteResponse.success) {
-                userVotes[event.id] = score; // Update local cache
-                let scoreEmoji = score === 1 ? '👍' : score === -1 ? '👎' : '🤷';
-                displayMessage(`Stimme (${scoreEmoji}) für "${event.title}" gespeichert.`, 'success', messageContainerId);
-            } else {
-                displayMessage(`Fehler: Stimme für "${event.title}" nicht gespeichert. ${voteResponse.message || ''}`, 'error', messageContainerId, 5000);
-                // Rollback UI for button selection (card is already animating out)
-                // The next card will show the correct state based on userVotes.
-                // If the same card were to be shown again, more complex rollback needed.
-            }
-        }).catch(error => {
-            displayMessage(`Netzwerk-/Skriptfehler beim Speichern für "${event.title}". (${error.message})`, 'error', messageContainerId, 5000);
-            // Rollback UI for button selection
         });
     }
 
-    // Initial display
     if (cards.length > 0) {
         updateCardStackVisuals();
     }

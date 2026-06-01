@@ -1,54 +1,194 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const resultsList = document.getElementById('results-list');
-    const resultsTitle = document.getElementById('results-title');
-    const backToVoteLink = document.getElementById('back-to-vote-link');
-    const loaderContainer = document.getElementById('loader-container-results');
-    const messageContainer = document.getElementById('message-container-results');
-
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const groupCode = urlParams.get('code');
-
+    const groupCode = sessionStorage.getItem('scienceNightGroupCode') || new URLSearchParams(window.location.search).get('code');
+    
     if (!groupCode) {
-        resultsList.innerHTML = '<p>Kein Gruppencode in der URL gefunden. Beispiel: /results.html?code=ASTRO2025</p>';
+        window.location.href = 'index.html';
         return;
     }
-    
-    // Show back to vote link if user is logged in to this group
-    const loggedInGroupCode = sessionStorage.getItem('scienceNightGroupCode');
-    if (loggedInGroupCode && loggedInGroupCode.toUpperCase() === groupCode.toUpperCase()) {
-        backToVoteLink.style.display = 'inline-block';
-    }
 
+    const resultsList = document.getElementById('results-list');
+    const title = document.getElementById('results-title');
+    title.textContent = `Ergebnisse & Master-Plan (Gruppe: ${groupCode})`;
 
-    resultsTitle.textContent = `Ergebnisse für Gruppe: ${groupCode.toUpperCase()}`;
     showLoader('loader-container-results');
 
-    const response = await callGoogleScript('getAggregatedResults', { groupCode });
+    const [eventsResponse, groupDataResponse] = await Promise.all([
+        fetchLocalEvents(),
+        callGoogleScript('getGroupVotesAndWeights', { groupCode })
+    ]);
+
     hideLoader();
 
-    if (response.success && response.results) {
-        if (response.results.length === 0) {
-            resultsList.innerHTML = '<p>Noch keine Abstimmungen für diese Gruppe oder keine Events vorhanden.</p>';
-            return;
-        }
-        response.results.forEach(event => {
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-                <h3>${event.title}</h3>
-                <p><strong>Zeit:</strong> ${event.time}</p>
-                <p><strong>Ort:</strong> ${event.location}</p>
-                <div class="result-scores">
-                    <span class="score-up">👍 Upvotes: ${event.upvotes}</span>
-                    <span class="score-neutral">🤷 Egal: ${event.neutral}</span>
-                    <span class="score-down">👎 Downvotes: ${event.downvotes}</span>
-                    <br>
-                    <span class="score-total">Gesamtpunktzahl: ${event.totalScore}</span>
-                </div>
-            `;
-            resultsList.appendChild(listItem);
-        });
+    if (!eventsResponse.success || !groupDataResponse.success) {
+        displayMessage('Fehler beim Laden der Daten.', 'error', 'message-container-results');
+        return;
+    }
+
+    const events = eventsResponse.events;
+    const votes = groupDataResponse.votes;
+    const weights = groupDataResponse.weights;
+
+    // Check how many users have voted
+    let uniqueUsers = new Set();
+    votes.forEach(v => uniqueUsers.add(v.username));
+    
+    // Check if the user wants to wait for 4 friends (could also be 5 if "Meine Freunde (4) und ich" = 5)
+    // We will assume 4 as mentioned in the prompt, or allow processing anyway if requested?
+    // Let's show a prominent message if less than 4 users have finished
+    if (uniqueUsers.size < 4) {
+        displayMessage(`Warte auf deine Gruppe! Bisher haben nur ${uniqueUsers.size} von 4 Personen abgestimmt.`, 'success', 'message-container-results', 0);
+        // We can still show intermediate results!
     } else {
-        displayMessage(response.message || 'Fehler beim Laden der Ergebnisse.', 'error', 'message-container-results');
+        displayMessage('Alle 4 Personen haben abgestimmt! Der finale Master-Plan ist bereit.', 'success', 'message-container-results', 5000);
+    }
+
+    // Calculate Raw Stats
+    let eventScores = {};
+    events.forEach(e => eventScores[e.id] = { id: e.id, title: e.title, event: e, baseScore: 0, weightScore: 0, totalScore: 0 });
+
+    votes.forEach(v => {
+        if (v.score === 1) eventScores[v.eventId].baseScore += 1;
+        if (v.score === -1) eventScores[v.eventId].baseScore -= 1;
+    });
+
+    weights.forEach(w => {
+        eventScores[w.eventId].weightScore += w.weight;
+    });
+
+    events.forEach(e => {
+        // formula for total score: base yes/no + sum of weights
+        eventScores[e.id].totalScore = eventScores[e.id].baseScore + (eventScores[e.id].weightScore * 2); 
+    });
+
+    let rankedEvents = Object.values(eventScores).sort((a,b) => b.totalScore - a.totalScore);
+
+    // Render Raw Stats
+    let rawHtml = `<h3>Beliebteste Veranstaltungen (Raw Stats)</h3><ul>`;
+    rankedEvents.slice(0, 10).forEach(r => {
+        if(r.totalScore > 0) {
+            rawHtml += `<li><strong>${r.title}</strong> (Score: ${r.totalScore})</li>`;
+        }
+    });
+    rawHtml += `</ul><hr>`;
+
+    // --- ALGORITHM ---
+    // Generate Schedules
+    let generatedSchedules = generateSchedules(events, eventScores);
+
+    let schedHtml = `<h3>Top 5 Vorgeschlagene Zeitpläne (Auto-Scheduler)</h3>`;
+    generatedSchedules.forEach((sched, index) => {
+        schedHtml += `<div style="background:var(--card-bg); margin:10px 0; padding:15px; border-radius:5px;">
+            <h4>Option ${index + 1} (Total Score: ${sched.totalScore})</h4>
+            <ul>`;
+        
+        let sortedItems = sched.items.sort((a,b) => {
+            const timeA = a.start.split(':').map(Number);
+            const timeB = b.start.split(':').map(Number);
+            // Adjust for night times (e.g. 01:00 should come after 23:00)
+            const getMins = (t) => (t[0] < 12 ? t[0] + 24 : t[0]) * 60 + t[1];
+            return getMins(timeA) - getMins(timeB);
+        });
+        
+        sortedItems.forEach(item => {
+            schedHtml += `<li><strong>${item.start} - ${item.end}</strong>: ${item.event.title} <em>(${item.event.location})</em> [Typ: ${item.event.type}]</li>`;
+        });
+        
+        schedHtml += `</ul></div>`;
+    });
+
+    resultsList.innerHTML = rawHtml + schedHtml;
+
+    // Helper to generate schedules
+    function generateSchedules(allEvents, scoresDict) {
+        // filter out events with non-positive total score
+        let candidateEvents = allEvents.filter(e => scoresDict[e.id].totalScore > 0);
+        // sort by score descending
+        candidateEvents.sort((a,b) => scoresDict[b.id].totalScore - scoresDict[a.id].totalScore);
+        
+        // Separate top events as priority, others as fillers
+        let priorityEvents = candidateEvents.slice(0, 15);
+        let fillerEvents = candidateEvents.slice(15, 60); // Check up to 45 fillers
+
+        function parseTime(tStr) {
+            const [h, m] = tStr.split(':').map(Number);
+            return (h < 12 ? h + 24 : h) * 60 + m; // shift after midnight to next day
+        }
+
+        function checkOverlap(ts1, ts2) {
+            return parseTime(ts1.start) < parseTime(ts2.end) && parseTime(ts1.end) > parseTime(ts2.start);
+        }
+
+        function hasOverlap(schedule, nextSlot) {
+            for (let item of schedule) {
+                if (checkOverlap(item, nextSlot)) return true;
+            }
+            return false;
+        }
+
+        // --- Beam Search for Priority Events ---
+        const BEAM_WIDTH = 100;
+        let states = [ { items: [], totalScore: 0 } ];
+
+        for (let ev of priorityEvents) {
+            let evScore = scoresDict[ev.id].totalScore;
+            let nextStates = [];
+
+            for (let state of states) {
+                // Option A: Skip this event
+                nextStates.push({ 
+                    items: [...state.items], 
+                    totalScore: state.totalScore 
+                });
+
+                // Option B: Schedule this event in one of its valid slots
+                // Dies erfüllt Regel 2: Die Führungs-Logik testet jeden Zeitslot für Touren
+                for (let ts of ev.timeSlots) {
+                    if (!hasOverlap(state.items, ts)) {
+                        nextStates.push({
+                            items: [...state.items, { event: ev, start: ts.start, end: ts.end, isFiller: false }],
+                            totalScore: state.totalScore + evScore
+                        });
+                    }
+                }
+            }
+            
+            // Remove duplicates by signature
+            let uniqueStates = [];
+            let signatures = new Set();
+            for (let ns of nextStates) {
+                let sig = ns.items.map(i => i.event.id + "@" + i.start).sort().join("|");
+                if (!signatures.has(sig)) {
+                    signatures.add(sig);
+                    uniqueStates.push(ns);
+                }
+            }
+
+            // Sort and keep top states
+            uniqueStates.sort((a,b) => b.totalScore - a.totalScore);
+            states = uniqueStates.slice(0, BEAM_WIDTH);
+        }
+
+        // We now have the best partial schedules. Grab the top 10 distinct schedules.
+        let topSchedules = states.slice(0, 10);
+        
+        // --- Regel 3: Lückenfüller ---
+        // Fill gaps in the top schedules with remaining events
+        for (let sched of topSchedules) {
+            for (let filler of fillerEvents) {
+                let fScore = scoresDict[filler.id].totalScore;
+                for (let ts of filler.timeSlots) {
+                    if (!hasOverlap(sched.items, ts)) {
+                        sched.items.push({ event: filler, start: ts.start, end: ts.end, isFiller: true });
+                        sched.totalScore += fScore;
+                        break; // Only add this filler once
+                    }
+                }
+            }
+        }
+        
+        // Re-sort because fillers might have changed the relative ordering
+        topSchedules.sort((a,b) => b.totalScore - a.totalScore);
+        
+        return topSchedules.slice(0, 5);
     }
 });

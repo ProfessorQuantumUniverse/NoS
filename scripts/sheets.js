@@ -79,3 +79,16 @@ function displayMessage(message, type = 'error', containerId = 'message-containe
         alert(message); // Fallback
     }
 }
+
+
+async function fetchLocalEvents() {
+    try {
+        const response = await fetch('events.json');
+        if (!response.ok) throw new Error('Network error');
+        const events = await response.json();
+        return { success: true, events: events };
+    } catch (error) {
+        console.error('Error fetching events.json:', error);
+        return { success: false, message: error.message };
+    }
+}

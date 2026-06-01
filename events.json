@@ -1,0 +1,1033 @@
+[
+  {
+    "id": 1,
+    "title": "Fifty Shades of Ray – Ultrakurzzeitspektroskopie mit Lasern",
+    "type": "Tour",
+    "location": "Institut für Biophysik",
+    "timeSlots": [{"start": "19:00", "end": "19:50"}, {"start": "20:00", "end": "20:50"}, {"start": "21:00", "end": "21:50"}, {"start": "22:00", "end": "22:50"}, {"start": "01:00", "end": "01:50"}]
+  },
+  {
+    "id": 2,
+    "title": "Hominiden-Escape-Room",
+    "type": "Tour",
+    "location": "Institut für Didaktik der Biowissenschaften",
+    "timeSlots": [{"start": "19:00", "end": "20:00"}, {"start": "21:00", "end": "22:00"}, {"start": "23:00", "end": "00:00"}, {"start": "01:00", "end": "02:00"}]
+  },
+  {
+    "id": 3,
+    "title": "Kleine Sonnen im Labor",
+    "type": "Tour",
+    "location": "Institut für Angewandte Physik",
+    "timeSlots": [{"start": "18:00", "end": "18:30"}, {"start": "19:00", "end": "19:30"}, {"start": "20:00", "end": "20:30"}]
+  },
+  {
+    "id": 4,
+    "title": "Klimaresiliente Baumarten für Gärten, Parks und Städte",
+    "type": "Tour",
+    "location": "Team des Wissenschaftsgartens",
+    "timeSlots": [{"start": "18:30", "end": "19:30"}, {"start": "20:30", "end": "21:30"}]
+  },
+  {
+    "id": 5,
+    "title": "Licht tanken im Highspeed-Modus: Den Energiespeichern der Zukunft auf der Spur",
+    "type": "Tour",
+    "location": "Institut für Physikalische und Theoretische Chemie",
+    "timeSlots": [{"start": "18:15", "end": "19:00"}, {"start": "19:00", "end": "19:45"}, {"start": "19:45", "end": "20:30"}, {"start": "20:30", "end": "21:15"}, {"start": "21:15", "end": "22:00"}]
+  },
+  {
+    "id": 6,
+    "title": "Nachtführung im Wissenschaftsgarten: Nächtliche Blüten und ihre Bestäuber",
+    "type": "Tour",
+    "location": "Institut für Ökologie, Evolution und Diversität",
+    "timeSlots": [{"start": "23:00", "end": "00:00"}]
+  },
+  {
+    "id": 7,
+    "title": "Riedbergexkursion",
+    "type": "Tour",
+    "location": "Institut für Physische Geographie",
+    "timeSlots": [{"start": "18:00", "end": "19:00"}]
+  },
+  {
+    "id": 8,
+    "title": "Spinnerei im Magnetfeld",
+    "type": "Tour",
+    "location": "Institut für Organische Chemie und Chemische Biologie",
+    "timeSlots": [{"start": "18:00", "end": "18:45"}, {"start": "19:00", "end": "19:45"}, {"start": "20:00", "end": "20:45"}, {"start": "21:00", "end": "21:45"}, {"start": "22:00", "end": "22:45"}, {"start": "23:00", "end": "23:45"}]
+  },
+  {
+    "id": 9,
+    "title": "Teilchenbeschleuniger von der Quelle bis zum Experiment",
+    "type": "Tour",
+    "location": "Institut für Angewandte Physik",
+    "timeSlots": [{"start": "18:00", "end": "18:30"}, {"start": "19:00", "end": "19:30"}, {"start": "20:00", "end": "20:30"}, {"start": "21:00", "end": "21:30"}, {"start": "22:00", "end": "22:30"}, {"start": "23:00", "end": "23:30"}, {"start": "00:00", "end": "00:30"}, {"start": "01:00", "end": "01:30"}, {"start": "02:00", "end": "02:30"}]
+  },
+  {
+    "id": 10,
+    "title": "Von Hörsaal zu Honigbiene: Rundgang zu Nachhaltigkeit auf dem Campus Riedberg",
+    "type": "Tour",
+    "location": "Nachhaltigkeitsbüro",
+    "timeSlots": [{"start": "19:00", "end": "20:30"}]
+  },
+  {
+    "id": 11,
+    "title": "Welt der Kristalle: Führung durch das Frankfurter Kristall- und Materiallabor",
+    "type": "Tour",
+    "location": "Physikalisches Institut",
+    "timeSlots": [{"start": "19:00", "end": "20:00"}, {"start": "21:00", "end": "22:00"}, {"start": "23:00", "end": "00:00"}]
+  },
+  {
+    "id": 12,
+    "title": "Arzneipflanzengarten",
+    "type": "Tour",
+    "location": "Institut für Pharmazeutische Biologie / Fachschaft Pharmazie",
+    "timeSlots": [{"start": "18:00", "end": "19:00"}]
+  },
+  {
+    "id": 13,
+    "title": "Atome und Moleküle unter dem Reaktionsmikroskop",
+    "type": "Tour",
+    "location": "Institut für Kernphysik",
+    "timeSlots": [{"start": "18:15", "end": "19:15"}, {"start": "19:15", "end": "20:15"}]
+  },
+  {
+    "id": 14,
+    "title": "CERNStunden - Führung durch die Ausstellung",
+    "type": "Tour",
+    "location": "Institut für Kernphysik",
+    "timeSlots": [{"start": "18:00", "end": "19:00"}, {"start": "18:30", "end": "19:30"}, {"start": "19:00", "end": "20:00"}, {"start": "19:30", "end": "20:30"}, {"start": "20:00", "end": "21:00"}, {"start": "20:30", "end": "21:30"}, {"start": "21:00", "end": "22:00"}, {"start": "21:30", "end": "22:30"}, {"start": "22:00", "end": "23:00"}, {"start": "22:30", "end": "23:30"}, {"start": "23:00", "end": "00:00"}]
+  },
+  {
+    "id": 15,
+    "title": "CERNStunden - Spezialführung zum ALICE-Experiment",
+    "type": "Tour",
+    "location": "Institut für Kernphysik",
+    "timeSlots": [{"start": "18:15", "end": "18:45"}, {"start": "19:15", "end": "19:45"}, {"start": "20:15", "end": "20:45"}, {"start": "21:15", "end": "21:45"}, {"start": "22:15", "end": "22:45"}]
+  },
+  {
+    "id": 16,
+    "title": "CERNStunden - Spezialführung zu Detektoren und Datenanalyse",
+    "type": "Tour",
+    "location": "Institut für Kernphysik",
+    "timeSlots": [{"start": "18:45", "end": "19:15"}, {"start": "19:45", "end": "20:15"}, {"start": "20:45", "end": "21:15"}, {"start": "21:45", "end": "22:15"}, {"start": "22:45", "end": "23:15"}]
+  },
+  {
+    "id": 17,
+    "title": "Chemiestudium - Eine Labortour durch die Praktika",
+    "type": "Tour",
+    "location": "JungesChemieForum Frankfurt",
+    "timeSlots": [{"start": "18:00", "end": "18:45"}, {"start": "19:00", "end": "19:45"}, {"start": "20:00", "end": "20:45"}, {"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 18,
+    "title": "Elektronenmikroskopie",
+    "type": "Tour",
+    "location": "Max-Planck-Institut für Biophysik",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}, {"start": "19:45", "end": "20:30"}, {"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 19,
+    "title": "Akaflieg",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "18:00", "end": "00:00"}]
+  },
+  {
+    "id": 20,
+    "title": "ancora",
+    "type": "Stand",
+    "location": "Biozentrum",
+    "timeSlots": [{"start": "18:00", "end": "22:00"}]
+  },
+  {
+    "id": 21,
+    "title": "Athene Center",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "17:00", "end": "22:00"}]
+  },
+  {
+    "id": 22,
+    "title": "btS Frankfurt",
+    "type": "Stand",
+    "location": "Biologicum",
+    "timeSlots": [{"start": "17:00", "end": "21:00"}]
+  },
+  {
+    "id": 23,
+    "title": "Chaos Computer Club Frankfurt",
+    "type": "Stand",
+    "location": "Biozentrum",
+    "timeSlots": [{"start": "18:00", "end": "02:00"}]
+  },
+  {
+    "id": 24,
+    "title": "Denken wie in der Wissenschaft. Lösungen schaffen für die Praxis",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "18:00", "end": "21:30"}]
+  },
+  {
+    "id": 25,
+    "title": "Die bunte Welt der Gesteine",
+    "type": "Stand",
+    "location": "Geozentrum 1.103",
+    "timeSlots": [{"start": "18:00", "end": "22:00"}]
+  },
+  {
+    "id": 26,
+    "title": "Die spinnen, die Spinnen – Leben am seidenen Faden",
+    "type": "Stand",
+    "location": "Biologicum",
+    "timeSlots": [{"start": "18:00", "end": "22:00"}]
+  },
+  {
+    "id": 27,
+    "title": "Fettexplosion",
+    "type": "Stand",
+    "location": "Schotterparkplatz vor dem Geozentrum",
+    "timeSlots": [{"start": "18:00", "end": "23:30"}]
+  },
+  {
+    "id": 28,
+    "title": "FeMath - Frauen in der Mathematik",
+    "type": "Stand",
+    "location": "OSZ",
+    "timeSlots": [{"start": "18:00", "end": "22:00"}]
+  },
+  {
+    "id": 29,
+    "title": "Fluoreszenzmikroskopie",
+    "type": "Stand",
+    "location": "Biologicum",
+    "timeSlots": []
+  },
+  {
+    "id": 30,
+    "title": "Fraunhofer-Institut für Translationale Medizin und Pharmakologie",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "18:00", "end": "22:30"}]
+  },
+  {
+    "id": 31,
+    "title": "Future Forge - 3D-Druck-Werkstatt",
+    "type": "Stand",
+    "location": "Biozentrum",
+    "timeSlots": [{"start": "17:00", "end": "00:00"}]
+  },
+  {
+    "id": 32,
+    "title": "Geowissenschaften zum Mitnehmen",
+    "type": "Stand",
+    "location": "Foyer Geozentrum",
+    "timeSlots": [{"start": "18:00", "end": "21:00"}]
+  },
+  {
+    "id": 33,
+    "title": "Gleiche Chancen schafft excellentes Wissen",
+    "type": "Stand",
+    "location": "Biozentrum",
+    "timeSlots": [{"start": "17:30", "end": "21:30"}]
+  },
+  {
+    "id": 34,
+    "title": "Hackerspace",
+    "type": "Stand",
+    "location": "Geozentrum 2.101/2.102",
+    "timeSlots": [{"start": "17:00", "end": "01:00"}]
+  },
+  {
+    "id": 35,
+    "title": "Helfe Leben zu retten - Stammzelltypisierungsaktion",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "17:00", "end": "23:00"}]
+  },
+  {
+    "id": 36,
+    "title": "Hello, World! - Kunst aus Code",
+    "type": "Stand",
+    "location": "OSZ Seminarraum 4",
+    "timeSlots": [{"start": "18:00", "end": "00:00"}]
+  },
+  {
+    "id": 37,
+    "title": "HIDE - Versteckt die Organe vor dem Immunsystem!",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "18:00", "end": "01:00"}]
+  },
+  {
+    "id": 38,
+    "title": "Infostand der Goethe-Universität",
+    "type": "Stand",
+    "location": "Biozentrum",
+    "timeSlots": [{"start": "17:00", "end": "23:00"}]
+  },
+  {
+    "id": 39,
+    "title": "Ingenieure ohne Grenzen",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "18:00", "end": "01:00"}]
+  },
+  {
+    "id": 40,
+    "title": "Kino Mondino",
+    "type": "Stand",
+    "location": "OSZ Seminarraum 2",
+    "timeSlots": [{"start": "18:00", "end": "04:00"}]
+  },
+  {
+    "id": 41,
+    "title": "Klima studieren",
+    "type": "Stand",
+    "location": "Foyer Geozentrum",
+    "timeSlots": [{"start": "17:00", "end": "21:00"}]
+  },
+  {
+    "id": 42,
+    "title": "MakeLab",
+    "type": "Stand",
+    "location": "Biozentrum",
+    "timeSlots": []
+  },
+  {
+    "id": 43,
+    "title": "Markt der Wissenschaft",
+    "type": "Stand",
+    "location": "MPI für Biophysik",
+    "timeSlots": [{"start": "17:00", "end": "21:30"}]
+  },
+  {
+    "id": 44,
+    "title": "Mathe draußen entdecken",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "17:00", "end": "20:00"}]
+  },
+  {
+    "id": 45,
+    "title": "Mobile Sternwarte",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "18:00", "end": "00:00"}]
+  },
+  {
+    "id": 46,
+    "title": "Nachhaltigkeitsbüro der Goethe-Universität",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "18:00", "end": "21:00"}]
+  },
+  {
+    "id": 47,
+    "title": "Senckenberg Ocean Species Alliance",
+    "type": "Stand",
+    "location": "Biozentrum",
+    "timeSlots": []
+  },
+  {
+    "id": 48,
+    "title": "Spielmobil",
+    "type": "Stand",
+    "location": "Wiese vor der Chemie",
+    "timeSlots": [{"start": "18:00", "end": "22:00"}]
+  },
+  {
+    "id": 49,
+    "title": "Teddyklinik",
+    "type": "Stand",
+    "location": "OSZ Seminarraum 3",
+    "timeSlots": [{"start": "17:00", "end": "21:00"}]
+  },
+  {
+    "id": 50,
+    "title": "TUcanSense - Innovative Medical Sensors",
+    "type": "Stand",
+    "location": "Außenbereich",
+    "timeSlots": [{"start": "18:00", "end": "22:00"}]
+  },
+  {
+    "id": 51,
+    "title": "Vorstellung der Berufsbilder Laborant und Technischer Assistent",
+    "type": "Stand",
+    "location": "Biozentrum",
+    "timeSlots": [{"start": "17:00", "end": "22:00"}]
+  },
+  {
+    "id": 52,
+    "title": "Wetlands for Life",
+    "type": "Stand",
+    "location": "Biologicum",
+    "timeSlots": [{"start": "18:00", "end": "00:00"}]
+  },
+  {
+    "id": 53,
+    "title": "Wetterballon",
+    "type": "Stand",
+    "location": "Schotterparkplatz vor dem Geozentrum",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 54,
+    "title": "Zentrum für Hochschulsport",
+    "type": "Stand",
+    "location": "OSZ-Terasse",
+    "timeSlots": [{"start": "17:00", "end": "23:00"}]
+  },
+  {
+    "id": 55,
+    "title": "Batterien und Kraftwerke für die Energiewende",
+    "speaker": "Nils Ackermann",
+    "type": "Lecture",
+    "location": "OSZ H1",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 56,
+    "title": "Anziehendes und Abstoßendes aus der Welt des Magnetismus",
+    "speaker": "Kristin Kliemt",
+    "type": "Lecture",
+    "location": "OSZ H2",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 57,
+    "title": "Schmerz lass nach! – Wie Schmerzmittel im Körper wirken und was wirklich hilft",
+    "speaker": "Achim Schmidtko",
+    "type": "Lecture",
+    "location": "OSZ H3",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 58,
+    "title": "Naturstoff- und Antibiotika- Forschung – Neue Waffen aus der Natur gegen multiresistente Erreger",
+    "speaker": "Max Crüsemann",
+    "type": "Lecture",
+    "location": "OSZ H4",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 59,
+    "title": "Cybersicherheit in Deutschland: Risiken, Trends und technologische Entwicklungen",
+    "speaker": "Haya Schulmann",
+    "type": "Lecture",
+    "location": "OSZ H5",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 60,
+    "title": "Mit Pflanzen auf Zeitreise: Evolution gestern, heute, morgen",
+    "speaker": "Niek Scheepens",
+    "type": "Lecture",
+    "location": "OSZ H6",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 61,
+    "title": "Surfen auf dem Meer der Erinnerung – Die Demenz von Beach Boy Brian Wilson",
+    "speaker": "Dieter Steinhilber",
+    "type": "Lecture",
+    "location": "Biozentrum B1",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 62,
+    "title": "Experimente zum Transformator",
+    "speaker": "Thomas Wilhelm",
+    "type": "Lecture",
+    "location": "Physik Φ1",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 63,
+    "title": "Die spinnen, die Spinnen – Leben am seidenen Faden",
+    "speaker": "Volker Wenzel",
+    "type": "Lecture",
+    "location": "Biologicum 1",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 64,
+    "title": "State-of-the-art 3D hydrodynamical modelling of stellar atmospheres",
+    "speaker": "Andrew Gallagher",
+    "type": "Lecture",
+    "location": "Biologicum 2",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 65,
+    "title": "Die Corona-Pandemie und ihre Folgen: Wie entsteht Long Covid",
+    "speaker": "Rolf Marschalek",
+    "type": "Lecture",
+    "location": "Chemie H1",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 66,
+    "title": "Die diskrete Mathematik des Smartphones",
+    "speaker": "Thorsten Theobald",
+    "type": "Lecture",
+    "location": "Geozentrum G1",
+    "timeSlots": [{"start": "18:30", "end": "19:15"}]
+  },
+  {
+    "id": 67,
+    "title": "Biochemie des Wurstbrots",
+    "speaker": "Rupert Abele, Simon Trowitzsch, David Glück, Celina Thiel",
+    "type": "Lecture",
+    "location": "OSZ H1",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 68,
+    "title": "Die Wissenschaft von Pokémon",
+    "speaker": "Sascha Vogel",
+    "type": "Lecture",
+    "location": "OSZ H2",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 69,
+    "title": "What's so special about consciousness?",
+    "speaker": "Sabine Windmann",
+    "type": "Lecture",
+    "location": "OSZ H3",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 70,
+    "title": "Alles berechenbar? Prognose der Leistung nach Vereinswechseln im Profifußball",
+    "speaker": "Jannis Pawlowsky, Fynn Flock",
+    "type": "Lecture",
+    "location": "OSZ H4",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 71,
+    "title": "2024: A Space Odyssey – The biology of being trapped in space",
+    "speaker": "Ryan Sarkar",
+    "type": "Lecture",
+    "location": "OSZ H5",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 72,
+    "title": "Climate Mystery: Kipppunkte",
+    "speaker": "Niki Lohmann",
+    "type": "Lecture",
+    "location": "OSZ H6",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 73,
+    "title": "Schwerkraft, schwarze Löcher und 50 Jahre Vergessenheit",
+    "speaker": "Luciano Rezolla",
+    "type": "Lecture",
+    "location": "Biozentrum B1",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 74,
+    "title": "Goethe und die Farben",
+    "speaker": "Roger Erb",
+    "type": "Lecture",
+    "location": "Physik Φ1",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 75,
+    "title": "Microproteins: the “dark proteome” unveils its secrets",
+    "speaker": "Mauro Siragusa",
+    "type": "Lecture",
+    "location": "Biologicum 1",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 76,
+    "title": "Ich bin dann mal weg: Arbeiten im Hochsicherheitslabor",
+    "speaker": "Martina Anzaghe",
+    "type": "Lecture",
+    "location": "Biologicum 2",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 77,
+    "title": "„Intelligente“ Biomaterialien - welche Bausteine bietet uns die Natur für Anwendungen in der Pharmazie und Medizin",
+    "speaker": "Stefan Schiller",
+    "type": "Lecture",
+    "location": "Chemie H1",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 78,
+    "title": "Schon wieder Mist gebaut? Die besten Ausreden aus neurokognitiver Sicht",
+    "speaker": "Christian Kell",
+    "type": "Lecture",
+    "location": "Geozentrum G1",
+    "timeSlots": [{"start": "19:45", "end": "20:30"}]
+  },
+  {
+    "id": 79,
+    "title": "Resistance is futile: Da lachen ja die Bakterien!",
+    "speaker": "Klaas Martinus Pos",
+    "type": "Lecture",
+    "location": "OSZ H1",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 80,
+    "title": "Sex, Drugs und Creativity",
+    "speaker": "Matthias Kaschube",
+    "type": "Lecture",
+    "location": "OSZ H2",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 81,
+    "title": "Gruppe macht glücklich. Soziale Identität als Resilienzfaktor",
+    "speaker": "Rolf van Dick",
+    "type": "Lecture",
+    "location": "OSZ H3",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 82,
+    "title": "mRNA Impfstoffe im Würgegriff der Faktenfeinde",
+    "speaker": "Stefanie Kaiser",
+    "type": "Lecture",
+    "location": "OSZ H4",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 83,
+    "title": "Mathematik? Kunst? Genau!",
+    "speaker": "Raman Sanyal",
+    "type": "Lecture",
+    "location": "OSZ H5",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 84,
+    "title": "Pixel und Protonen – Live-Podcast",
+    "speaker": "Sascha Vogel",
+    "type": "Lecture",
+    "location": "OSZ H6",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 85,
+    "title": "Wie kommen Arzneistoffe in den Körper? Von der Tablette zum Hightechprodukt",
+    "speaker": "Maike Windbergs",
+    "type": "Lecture",
+    "location": "Biozentrum B1",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 86,
+    "title": "Das Galaktische Zentrum und sein Monster",
+    "speaker": "Georg Piehler",
+    "type": "Lecture",
+    "location": "Physik Φ1",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 87,
+    "title": "Genau zugehört mit KI – Bioakustische Forschung zum Artenschutz",
+    "speaker": "Paul Dierkes",
+    "type": "Lecture",
+    "location": "Biologicum 1",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 88,
+    "title": "Buffon's Nadelproblem: wir berechnen Pi",
+    "speaker": "Andreas Bernig",
+    "type": "Lecture",
+    "location": "Biologicum 2",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 89,
+    "title": "Tipping Point: why diseased livers suddenly collapse and how cells try to prevent it",
+    "speaker": "Cristina Ortiz, Nico Langvogt",
+    "type": "Lecture",
+    "location": "Chemie H1",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 90,
+    "title": "Ein kleiner Pieks für dich, ein großer Schritt für die Menschheit – wie ein Impfstoff entsteht",
+    "speaker": "Julius Pollinger",
+    "type": "Lecture",
+    "location": "Geozentrum G1",
+    "timeSlots": [{"start": "21:00", "end": "21:45"}]
+  },
+  {
+    "id": 91,
+    "title": "Der Chemiker von Os",
+    "speaker": "Mathias Schott",
+    "type": "Lecture",
+    "location": "OSZ H1",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 92,
+    "title": "How to build a surgeon – die Wissenschaft vom Lernen und Lehren chirurgischer Fähigkeiten",
+    "speaker": "Teresa Schreckenbach",
+    "type": "Lecture",
+    "location": "OSZ H2",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 93,
+    "title": "Biodiversität, Land und Leute in Benin, Westafrika",
+    "speaker": "Meike Piepenbring, Martin Piepenbring",
+    "type": "Lecture",
+    "location": "OSZ H3",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 94,
+    "title": "Science without borders: life map of a researcher from India to Europe / Fine-tuning molecules... / Parallel processing... / Chasing molecules...",
+    "speaker": "Kavya Gopakumar, Lucie Eisen, Constantinos Kyriacou, Lorenzo Ballerini",
+    "type": "Lecture",
+    "location": "OSZ H4",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 95,
+    "title": "Vorhersagbarkeit von Wetter und Klima",
+    "speaker": "Bodo Ahrens",
+    "type": "Lecture",
+    "location": "OSZ H5",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 96,
+    "title": "Wenn niemand die Krankheit kennt – Seltene Erkrankungen im Fokus der Pharmaforschung",
+    "speaker": "Mario Wurglics",
+    "type": "Lecture",
+    "location": "OSZ H6",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 97,
+    "title": "Blick in die Tiefe – Der unbekannten Vielfalt der Tiefsee auf der Spur",
+    "speaker": "Henry Knauber",
+    "type": "Lecture",
+    "location": "Biozentrum B1",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 98,
+    "title": "Mathematik draußen machen – Was bringt das?",
+    "speaker": "Matthias Ludwig",
+    "type": "Lecture",
+    "location": "Biozentrum B2",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 99,
+    "title": "Auf der Jagd nach Supermassereichen Schwarzen Löchern",
+    "speaker": "Sebastian Heß",
+    "type": "Lecture",
+    "location": "Physik Φ1",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 100,
+    "title": "Wovon träumst Du nachts? Persönlichkeit, Wünsche und Motive in Online-Dating und sexuellen Fantasien",
+    "speaker": "Anna Kaeding, Jakob Mertesacker",
+    "type": "Lecture",
+    "location": "Biologicum 1",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 101,
+    "title": "The trapping of highly charged particles in an accelerator",
+    "speaker": "Giuliano Franchetti",
+    "type": "Lecture",
+    "location": "Biologicum 2",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 102,
+    "title": "Megalodon – was Zähne über gigantische Urzeithaie verraten",
+    "speaker": "Jeremy McCormack",
+    "type": "Lecture",
+    "location": "Chemie H1",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 103,
+    "title": "Tickende Zeitbombe im Kopf? Mythen und Fakten zu Aneurysmen",
+    "speaker": "Ferdinand Bohmann",
+    "type": "Lecture",
+    "location": "Geozentrum G1",
+    "timeSlots": [{"start": "22:15", "end": "23:00"}]
+  },
+  {
+    "id": 104,
+    "title": "Übersinnliches aus dem Pflanzenreich",
+    "speaker": "Julia Sommer",
+    "type": "Lecture",
+    "location": "OSZ H1",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 105,
+    "title": "Die Entstehung des Lebens: die Evolution der Ideen und der Wirklichkeit",
+    "speaker": "Jörg Soppa",
+    "type": "Lecture",
+    "location": "OSZ H2",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 106,
+    "title": "Kleine Teilchen ganz groß – Neutronenquellen und deren Anwendungen in Medizin und Grundlagenforschung",
+    "speaker": "Holger Podlech",
+    "type": "Lecture",
+    "location": "OSZ H3",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 107,
+    "title": "Robotic Telescopes & remote Observations",
+    "speaker": "Camilla Juul Hansen",
+    "type": "Lecture",
+    "location": "OSZ H5",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 108,
+    "title": "Mehr als nur Licht: Ungewöhnliche Anwendungen in der Biophysik und Technik",
+    "speaker": "Luuk van Wilderen",
+    "type": "Lecture",
+    "location": "OSZ H6",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 109,
+    "title": "Ist das wichtig oder kann das weg? Die Rolle von ‚Beifang‘ in der wissenschaftlichen Datenerhebung",
+    "speaker": "Ingo Ebersberger",
+    "type": "Lecture",
+    "location": "Biozentrum B1",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 110,
+    "title": "Die Macht der Milligramm – wenn Arzneistoffe zum Gift werden",
+    "speaker": "Christian Ude",
+    "type": "Lecture",
+    "location": "Biozentrum B2",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 111,
+    "title": "Spurenstoffe als Treiber des Biodiversitätsverlusts in Gewässern",
+    "speaker": "Jörg Oehlmann",
+    "type": "Lecture",
+    "location": "Biozentrum B3",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 112,
+    "title": "Wo könnte Leben im All existieren?",
+    "speaker": "Markus Röllig",
+    "type": "Lecture",
+    "location": "Physik Φ1",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 113,
+    "title": "Molekulare Qubits – Wie man mit Chemie Physik macht",
+    "speaker": "Sören Schlittenhart",
+    "type": "Lecture",
+    "location": "Biologicum 1",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 114,
+    "title": "Turbulenz und Wirbel um Wellen und andere Kleinigkeiten: Herausforderungen an die Klimaforschung",
+    "speaker": "Ulrich Achatz",
+    "type": "Lecture",
+    "location": "Biologicum 2",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 115,
+    "title": "Sustainable Aviation – Greenwashing oder realistische Vision?",
+    "speaker": "Alexander Vogel",
+    "type": "Lecture",
+    "location": "Chemie H1",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 116,
+    "title": "Der Boden des Jahres – ein Haufen Dreck erzählt Umweltgeschichten",
+    "speaker": "Rainer Dambeck",
+    "type": "Lecture",
+    "location": "Geozentrum G1",
+    "timeSlots": [{"start": "23:30", "end": "00:15"}]
+  },
+  {
+    "id": 117,
+    "title": "Science Slam",
+    "speaker": "Science Slam",
+    "type": "Lecture",
+    "location": "OSZ H1",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 118,
+    "title": "Arzneimittel aus Blut – Herstellung, Wirkung, Sicherheit",
+    "speaker": "Gerrit Praefke",
+    "type": "Lecture",
+    "location": "OSZ H2",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 119,
+    "title": "HIDE – Versteckt die Organe vor dem Immunsystem!",
+    "speaker": "iGEM",
+    "type": "Lecture",
+    "location": "OSZ H3",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 120,
+    "title": "Deine Mutter ist verstrahlt – Vortrag über die natürliche Strahlenbelastung",
+    "speaker": "Oliver Klein",
+    "type": "Lecture",
+    "location": "OSZ H4",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 121,
+    "title": "The Science of Concert Crowds: Why you have never seen a clockwise circle pit",
+    "speaker": "Mathieu Renard",
+    "type": "Lecture",
+    "location": "OSZ H5",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 122,
+    "title": "Reaching for the sky – climate science with ballons and aircrafts",
+    "speaker": "Sophie Bauchinger",
+    "type": "Lecture",
+    "location": "OSZ H6",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 123,
+    "title": "Segel gegen den Klimawandel?",
+    "speaker": "René Reifarth",
+    "type": "Lecture",
+    "location": "Biozentrum B1",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 124,
+    "title": "KI in der rechtsmedizinischen Lehre: abstoßende Bilder und postmortales Persönlichkeitsrecht?",
+    "speaker": "Marcel Verhoff",
+    "type": "Lecture",
+    "location": "Biozentrum B2",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 125,
+    "title": "TUCanSense – Innovative Medical Sensors",
+    "speaker": "TUCanSense-Team",
+    "type": "Lecture",
+    "location": "Biozentrum B3",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 126,
+    "title": "Teilchenbeschleuniger aus dem 3D Drucker – Ist das überhaupt möglich?",
+    "speaker": "Hendrik Hähnel",
+    "type": "Lecture",
+    "location": "Physik Φ1",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 127,
+    "title": "Chemie des Faustes",
+    "speaker": "Gari Ivanov",
+    "type": "Lecture",
+    "location": "Chemie H1",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 128,
+    "title": "Klimawandel und Wasser weltweit – und wie wir damit umgehen können",
+    "speaker": "Petra Döll",
+    "type": "Lecture",
+    "location": "Geozentrum G1",
+    "timeSlots": [{"start": "00:45", "end": "01:30"}]
+  },
+  {
+    "id": 129,
+    "title": "Warum KIs nie wie Menschen denken werden und den Mathematiker, den alle hassten",
+    "speaker": "Jan Stricker",
+    "type": "Lecture",
+    "location": "OSZ H1",
+    "timeSlots": [{"start": "02:00", "end": "02:45"}]
+  },
+  {
+    "id": 130,
+    "title": "Was wir aus League of Legends über strategisches Managment lernen können",
+    "speaker": "Robin Schulz",
+    "type": "Lecture",
+    "location": "OSZ H4",
+    "timeSlots": [{"start": "02:00", "end": "02:45"}]
+  },
+  {
+    "id": 131,
+    "title": "Mathematik zum Hören: Die verborgene Geometrie unserer Lieblingsmusik",
+    "speaker": "Torsten Rothenwald",
+    "type": "Lecture",
+    "location": "OSZ H5",
+    "timeSlots": [{"start": "02:00", "end": "02:45"}]
+  },
+  {
+    "id": 132,
+    "title": "WTF is Analog Computing?",
+    "speaker": "Sven Köppel",
+    "type": "Lecture",
+    "location": "OSZ H6",
+    "timeSlots": [{"start": "02:00", "end": "02:45"}]
+  },
+  {
+    "id": 133,
+    "title": "Fliegen Elektronen in Atomen wirklich im Kreis – und wenn ja in welche Richtung? Quantenimaging mit mehrfarbigen Laserpulsen",
+    "speaker": "Sebastian Eckart",
+    "type": "Lecture",
+    "location": "Physik Φ1",
+    "timeSlots": [{"start": "02:00", "end": "02:45"}]
+  },
+  {
+    "id": 134,
+    "title": "Unglaubliches aus der Welt der Wissenschaft oder einfach gelogen?",
+    "speaker": "Echt oder Fake",
+    "type": "Lecture",
+    "location": "OSZ H1",
+    "timeSlots": [{"start": "04:15", "end": "05:00"}]
+  },
+  {
+    "id": 135,
+    "title": "Begrüßung und Eröffnungsvortrag: Wie künstliche Intelligenz die Wissenschaft verändert",
+    "speaker": "Prof. Frauke Gräter",
+    "type": "Lecture",
+    "location": "OSZ H1 (gestreamt in alle OSZ-Hörsäle)",
+    "timeSlots": [
+      {
+        "start": "17:00",
+        "end": "18:00"
+      }
+    ]
+  }
+]
